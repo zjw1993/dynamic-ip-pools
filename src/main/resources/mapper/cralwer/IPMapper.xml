@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.weiniu.dao.IPMapper">
+    
+    <resultMap id="BaseResultMap" type="com.weiniu.entity.IP" >
+		<id column="id" property="id"/>
+		<result column="host" property="host"/>
+		<result column="port" property="port"/>
+		<result column="location" property="location"/>
+		<result column="come_from" property="comeFrom"/>
+		<!-- <result column="create_time" property="createTime"/> -->
+	</resultMap>
+	
+	<insert id="insert" parameterType="Object">
+		insert into ip_pool(
+			host,
+			port,
+			location,
+			come_from
+		) values (
+			#{host},
+			#{port},
+			#{location},
+			#{comeFrom}
+		)
+	</insert>
+	
+	<delete id="delete" parameterType="int">
+		delete from ip_pool
+		where id = #{id}
+	</delete>
+	
+	<select id="selectAll" resultMap="BaseResultMap">
+		select 
+			id,
+			host,
+			port,
+			location,
+			come_from
+		from ip_pool 
+	</select>
+	
+	<select id="selectByHostAndPort" parameterType="Object" resultMap="BaseResultMap">
+		select 
+			id,
+			host,
+			port,
+			location,
+			come_from
+		from ip_pool
+		where host = #{host}
+		  and port = #{port}
+		limit 1
+	</select>
+	
+    
+</mapper>
