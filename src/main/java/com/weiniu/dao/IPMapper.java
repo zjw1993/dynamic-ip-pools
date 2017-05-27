@@ -2,16 +2,16 @@ package com.weiniu.dao;
 
 import java.util.List;
 
-import com.weiniu.entity.IP;
+import com.weiniu.entity.ProxyIP;
 
 public interface IPMapper {
 
-	public void insert(IP ip);
+	public void insert(ProxyIP ip);
 	
 	public void delete(Integer id);
 	
-	public List<IP> selectAll();
+	public List<ProxyIP> selectAll();
 	
-	public IP selectByHostAndPort(IP ip);
+	public ProxyIP selectByHostAndPort(ProxyIP ip);
 	
 }

@@ -12,20 +12,12 @@
 	<context:annotation-config />
 	<task:annotation-driven/>
     <!-- 爬取代理网站代理ip的任务  -->
-    <!-- <bean id="kDLProxyIPCralwer" class="com.weiniu.task.cralwer.KDLProxyIPCralwer"/>
-    <bean id="xiCiProxyIPCralwer" class="com.weiniu.task.cralwer.XiCiProxyIPCralwer"/>
-    <bean id="liuLiuProxyIPCralwer" class="com.weiniu.task.cralwer.LiuLiuProxyIPCralwer"/>
-    <bean id="yunProxyIPCralwer" class="com.weiniu.task.cralwer.YunProxyIPCralwer"/> -->
-    <bean id="allProxyCralwer" class="com.weiniu.task.cralwer.AllProxyCralwer"/>
+    <bean id="proxyCralwerTask" class="com.weiniu.task.ProxyCralwerTask"/>
     <!-- 过滤数据库中无效代理的定时任务 -->
     <bean id="checkProxyTask" class="com.weiniu.task.CheckProxyTask" />
 
     <task:scheduled-tasks>
-	   <!-- <task:scheduled ref="kDLProxyIPCralwer" method="run" cron="0 */10 * * * ?"/>每隔30分钟执行一次
-	   <task:scheduled ref="xiCiProxyIPCralwer" method="run" cron="0 */10 * * * ?"/>每隔30分钟执行一次
-	   <task:scheduled ref="liuLiuProxyIPCralwer" method="run" cron="0 */10 * * * ?"/>每隔30分钟执行一次
-	   <task:scheduled ref="yunProxyIPCralwer" method="run" cron="0 */10 * * * ?"/>每隔30分钟执行一次 -->
-	   <task:scheduled ref="allProxyCralwer" method="run" cron="0 */50 * * * ?"/><!-- 每隔30分钟执行一次  -->
-	   <task:scheduled ref="checkProxyTask" method="run" cron="0 */5 * * * ?"/><!--每隔30分钟执行一次-->
+	   <task:scheduled ref="proxyCralwerTask" method="run" cron="0 */50 * * * ?"/><!-- 每隔50分钟执行一次  -->
+	   <task:scheduled ref="checkProxyTask" method="run" cron="0 */5 * * * ?"/><!--每隔5分钟执行一次-->
 	</task:scheduled-tasks> 
 </beans>
