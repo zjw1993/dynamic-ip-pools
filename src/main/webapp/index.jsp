@@ -36,25 +36,32 @@
 
 
 <script type="text/javascript">
-	$(function(){
-		$.ajax({
-            type: "GET",
-            url: "proxy/stat.do",
-            data: {},
-            dataType: "json",
-            success: function(data){
-            	$("#count").text(data.count);
-                var html = ''; 
-                $.each(data.data, function(i, item){
-                     html += "<tr><td>"+item.host+"</td>"
-                           + "<td>"+item.port+"</td>"
-                           + "<td>"+item.comeFrom+"</td>"
-                           + "<td>"+item.createTime+"</td></tr>";
-                });
-                $('#tbody').html(html);
-            }
-        });
-	})
+		
+		function getdata(){
+			$.ajax({
+	            type: "GET",
+	            url: "proxy/stat.do",
+	            data: {},
+	            dataType: "json",
+	            success: function(data){
+	            	$("#count").text(data.count);
+	                var html = ''; 
+	                $.each(data.data, function(i, item){
+	                     html += "<tr><td>"+item.host+"</td>"
+	                           + "<td>"+item.port+"</td>"
+	                           + "<td>"+item.comeFrom+"</td>"
+	                           + "<td>"+item.createTime+"</td></tr>";
+	                });
+	                $('#tbody').html(html);
+	            }
+	        });
+		}
+		
+		$(function(){
+			getdata();
+		})
+		
+		setInterval("getdata()", 1000 * 10);
 </script>
 </body>
 </html>

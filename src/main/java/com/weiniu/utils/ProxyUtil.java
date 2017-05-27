@@ -22,7 +22,8 @@ public class ProxyUtil {
 		return TEST_SITES[RandomUtil.randomInt(TEST_SITES.length)];
 	}
 	
-    public static boolean checkProxy(String ip, Integer port, String from){  
+    public static boolean checkProxy(String ip, Integer port, String from){ 
+    	logger.info(from +"--" + ip + ":" + port);
         try {  
         	// 随机取一个网站做连接测试
             Jsoup.connect(getUrl())
