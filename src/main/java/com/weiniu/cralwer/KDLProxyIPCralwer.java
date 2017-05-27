@@ -11,8 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.weiniu.entity.ProxyIP;
-import com.weiniu.service.IPService;
+import com.weiniu.service.IProxyIPService;
 import com.weiniu.utils.ProxyUtil;
+import com.weiniu.utils.UserAgentUtil;
   
 /** 
  *  
@@ -30,7 +31,7 @@ public class KDLProxyIPCralwer {
 	private static final int TOTAL_PAGE = 15;
 	
 	@Autowired
-	private IPService iPService;
+	private IProxyIPService proxyIPService;
 	
     public void run(){
     	cralwer(URL, TOTAL_PAGE);  
@@ -39,9 +40,10 @@ public class KDLProxyIPCralwer {
     private void cralwer(String baseUrl, int totalPage){
         String ipReg = "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3} \\d{1,6}";
         Pattern ipPtn = Pattern.compile(ipReg);
+        ProxyIP proxy;
         
         for (int i = 1; i < totalPage; i++) {
-        	ProxyIP proxy = iPService.getAProxy();
+        	proxy = proxyIPService.getAProxy();
             try {
             	Document doc;
             	if(null != proxy) {
@@ -50,10 +52,10 @@ public class KDLProxyIPCralwer {
                             .header("Accept-Encoding", "gzip, deflate, sdch")
                             .header("Accept-Language", "zh-CN,zh;q=0.8")
                             .header("Cache-Control", "max-age=0")
-                            .header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36")
+                            .header("User-Agent", UserAgentUtil.randomUserAgent())
                             .header("Cookie", "channelid=0; sid=1495777796497660; _ga=GA1.2.7788636.1495776618; _gid=GA1.2.377650158.1495778243; Hm_lvt_7ed65b1cc4b810e9fd37959c9bb51b31=1495776618; Hm_lpvt_7ed65b1cc4b810e9fd37959c9bb51b31=1495778243")
                             .header("Host", "www.kuaidaili.com")
-                            .header("Referer", "http://www.kuaidaili.com/free/outha/")
+                            .header("Referer", baseUrl + (i-1) + "/")
                             .timeout(30*1000)
                             .proxy(proxy.getHost(), proxy.getPort(), null)
                             .get();
@@ -63,10 +65,10 @@ public class KDLProxyIPCralwer {
             				.header("Accept-Encoding", "gzip, deflate, sdch")
             				.header("Accept-Language", "zh-CN,zh;q=0.8")
             				.header("Cache-Control", "max-age=0")
-            				.header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36")
+            				.header("User-Agent", UserAgentUtil.randomUserAgent())
             				.header("Cookie", "channelid=0; sid=1495777796497660; _ga=GA1.2.7788636.1495776618; _gid=GA1.2.377650158.1495778243; Hm_lvt_7ed65b1cc4b810e9fd37959c9bb51b31=1495776618; Hm_lpvt_7ed65b1cc4b810e9fd37959c9bb51b31=1495778243")
             				.header("Host", "www.kuaidaili.com")
-            				.header("Referer", "http://www.kuaidaili.com/free/outha/")
+            				.header("Referer", baseUrl + (i-1) + "/")
             				.timeout(30*1000)
             				.get();
             	}
@@ -77,11 +79,12 @@ public class KDLProxyIPCralwer {
                     String[] strs = m.group().split(" ");
                     if(ProxyUtil.checkProxy(strs[0],Integer.parseInt(strs[1]), FROM)){
                     	// 保存有效代理ip到数据库
-                    	iPService.saveProxy(strs[0], Integer.parseInt(strs[1]), FROM);
+                    	proxyIPService.saveProxy(strs[0], Integer.parseInt(strs[1]), FROM);
                     }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                proxy = proxyIPService.getAProxy();
             }
 
         }

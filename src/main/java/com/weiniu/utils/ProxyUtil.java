@@ -10,7 +10,7 @@ public class ProxyUtil {
 
 	private static final Logger logger = LoggerFactory.getLogger(ProxyUtil.class);
 	
-	// 选取一些响应速度比较快的网址用来测试代理ip的有效性
+	// 选取一些响应速度比较快的网址用来测试代理IP的有效性
 	private static final String[] TEST_SITES = {
 			"http://www.json.cn",
 			"http://1212.ip138.com/ic.asp",
@@ -18,11 +18,14 @@ public class ProxyUtil {
 			"http://www.baidu.com"
 	};
 	
+	private static String getUrl(){
+		return TEST_SITES[RandomUtil.randomInt(TEST_SITES.length)];
+	}
+	
     public static boolean checkProxy(String ip, Integer port, String from){  
         try {  
         	// 随机取一个网站做连接测试
-        	String url = TEST_SITES[(int) Math.floor(Math.random()*TEST_SITES.length)];
-            Jsoup.connect(url)
+            Jsoup.connect(getUrl())
                     .timeout(3*1000)  
                     .proxy(ip, port, null)  
                     .get();  
@@ -32,11 +35,11 @@ public class ProxyUtil {
             return false;  
         }
     }
+    
     public static boolean checkProxy(ProxyIP ip){  
     	try {  
     		// 随机取一个网站做连接测试
-    		String url = TEST_SITES[(int) Math.floor(Math.random()*TEST_SITES.length)];
-    		Jsoup.connect(url)
+    		Jsoup.connect(getUrl())
     		.timeout(3*1000)  
     		.proxy(ip.getHost(), ip.getPort(), null)  
     		.get();  
@@ -46,6 +49,8 @@ public class ProxyUtil {
     		return false;  
     	}
     }
+    
+    
     
     public static void main(String[] args) {
 		checkProxy("183.153.30.73", 808, "");

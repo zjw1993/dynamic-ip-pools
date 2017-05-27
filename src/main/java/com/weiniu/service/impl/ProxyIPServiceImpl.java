@@ -6,37 +6,37 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.weiniu.dao.IPMapper;
+import com.weiniu.dao.ProxyIPMapper;
 import com.weiniu.entity.ProxyIP;
-import com.weiniu.service.IPService;
+import com.weiniu.service.IProxyIPService;
 import com.weiniu.utils.ProxyUtil;
 
-@Service("iPService")
-public class IPServiceImpl implements IPService{
+@Service("proxyIPService")
+public class ProxyIPServiceImpl implements IProxyIPService{
 
 	@Autowired
-	private IPMapper iPMapper;
+	private ProxyIPMapper proxyIPMapper;
 	
 	@Override
 	public void insert(ProxyIP ip) {
 		if(ip != null
 				&& !StringUtils.isEmpty(ip.getHost())
 				&& 0 != ip.getPort()
-				&& null == iPMapper.selectByHostAndPort(ip)) {
-			iPMapper.insert(ip);
+				&& null == proxyIPMapper.selectByHostAndPort(ip)) {
+			proxyIPMapper.insert(ip);
 		}
 	}
 
 	@Override
 	public void delete(Integer id) {
 		if(null != id) {
-			iPMapper.delete(id);
+			proxyIPMapper.delete(id);
 		}
 	}
 	
 	@Override
 	public List<ProxyIP> selectAll() {
-		List<ProxyIP> list = iPMapper.selectAll();
+		List<ProxyIP> list = proxyIPMapper.selectAll();
 		return list;
 	}
 
@@ -45,7 +45,7 @@ public class IPServiceImpl implements IPService{
 		if(ip != null
 				&& !StringUtils.isEmpty(ip.getHost())
 				&& 0 != ip.getPort()) {
-			return iPMapper.selectByHostAndPort(ip);
+			return proxyIPMapper.selectByHostAndPort(ip);
 		}
 		return null;
 	}

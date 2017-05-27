@@ -9,7 +9,7 @@ import com.weiniu.cralwer.XiCiProxyIPCralwer;
 import com.weiniu.cralwer.YunProxyIPCralwer;
 
 /**
- * 爬取代理网站免费ip的定时任务
+ * 爬取代理网站免费IP的定时任务
  * @author zhangjw
  *
  */

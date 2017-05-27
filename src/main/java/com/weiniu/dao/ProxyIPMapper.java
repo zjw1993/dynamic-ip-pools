@@ -1,10 +1,10 @@
-package com.weiniu.service;
+package com.weiniu.dao;
 
 import java.util.List;
 
 import com.weiniu.entity.ProxyIP;
 
-public interface IPService {
+public interface ProxyIPMapper {
 
 	public void insert(ProxyIP ip);
 	
@@ -14,11 +14,4 @@ public interface IPService {
 	
 	public ProxyIP selectByHostAndPort(ProxyIP ip);
 	
-	public void saveProxy(String host, int port, String from);
-	
-	/**
-	 * 随机获取一个可用ip
-	 * @return
-	 */
-	public ProxyIP getAProxy();
 }

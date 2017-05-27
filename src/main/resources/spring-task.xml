@@ -17,7 +17,7 @@
     <bean id="checkProxyTask" class="com.weiniu.task.CheckProxyTask" />
 
     <task:scheduled-tasks>
-	   <task:scheduled ref="proxyCralwerTask" method="run" cron="0 */50 * * * ?"/><!-- 每隔50分钟执行一次  -->
+	   <task:scheduled ref="proxyCralwerTask" method="run" cron="0 */20 * * * ?"/><!-- 每隔50分钟执行一次  -->
 	   <task:scheduled ref="checkProxyTask" method="run" cron="0 */5 * * * ?"/><!--每隔5分钟执行一次-->
 	</task:scheduled-tasks> 
 </beans>

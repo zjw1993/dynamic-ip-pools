@@ -7,6 +7,7 @@ public class ProxyIP {
 	private int port;
 	private String location;
 	private String comeFrom;
+	private String createTime;
 
 	public Integer getId() {
 		return id;
@@ -47,6 +48,15 @@ public class ProxyIP {
 
 	public void setComeFrom(String comeFrom) {
 		this.comeFrom = comeFrom;
+	}
+	
+
+	public String getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
 	}
 
 	@Override

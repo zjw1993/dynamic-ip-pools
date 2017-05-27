@@ -11,8 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.weiniu.entity.ProxyIP;
-import com.weiniu.service.IPService;
+import com.weiniu.service.IProxyIPService;
 import com.weiniu.utils.ProxyUtil;
+import com.weiniu.utils.UserAgentUtil;
   
 /** 
  *  
@@ -31,7 +32,7 @@ public class YunProxyIPCralwer {
 	private static final int TOTAL_PAGE = 15;
 	
 	@Autowired
-	private IPService iPService;
+	private IProxyIPService proxyIPService;
 	
     public void run(){
     	cralwer(URL, TOTAL_PAGE);
@@ -40,9 +41,10 @@ public class YunProxyIPCralwer {
     private void cralwer(String baseUrl, int totalPage){
         String ipReg = "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3} \\d{1,6}";
         Pattern ipPtn = Pattern.compile(ipReg);
+        ProxyIP proxy;
           
         for (int i = 1; i < totalPage; i++) {
-        	ProxyIP proxy = iPService.getAProxy();
+        	proxy = proxyIPService.getAProxy();
             try {
             	Document doc;
             	if(null != proxy) {
@@ -51,7 +53,7 @@ public class YunProxyIPCralwer {
                             .header("Accept-Encoding", "gzip, deflate, sdch")
                             .header("Accept-Language", "zh-CN,zh;q=0.8")
                             .header("Cache-Control", "max-age=0")
-                            .header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36")
+                            .header("User-Agent", UserAgentUtil.randomUserAgent())
                             .header("Cookie", "ASPSESSIONIDASSDTTBB=GCGAPDODMCFDLJMOHKPHMPKK; safedog-flow-item=A788CDD0EBD25DE33E0238B3E52EAFD7; UM_distinctid=15c44e0d2c80-070b24824c7c2a-3c654009-1fa400-15c44e0d2c925f; CNZZDATA1256284042=1219135109-1495804302-%7C1495804302")
                             .header("Host", "www.ip3366.net")
                             .header("Referer", "http://www.ip3366.net/free")
@@ -64,7 +66,7 @@ public class YunProxyIPCralwer {
                             .header("Accept-Encoding", "gzip, deflate, sdch")
                             .header("Accept-Language", "zh-CN,zh;q=0.8")
                             .header("Cache-Control", "max-age=0")
-                            .header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36")
+                            .header("User-Agent", UserAgentUtil.randomUserAgent())
                             .header("Cookie", "ASPSESSIONIDASSDTTBB=GCGAPDODMCFDLJMOHKPHMPKK; safedog-flow-item=A788CDD0EBD25DE33E0238B3E52EAFD7; UM_distinctid=15c44e0d2c80-070b24824c7c2a-3c654009-1fa400-15c44e0d2c925f; CNZZDATA1256284042=1219135109-1495804302-%7C1495804302")
                             .header("Host", "www.ip3366.net")
                             .header("Referer", "http://www.ip3366.net/free")
@@ -78,13 +80,18 @@ public class YunProxyIPCralwer {
                     String[] strs = m.group().split(" ");
                     if(ProxyUtil.checkProxy(strs[0],Integer.parseInt(strs[1]), FROM)){
                     	// 保存有效代理ip到数据库
-                    	iPService.saveProxy(strs[0], Integer.parseInt(strs[1]), FROM);
+                    	proxyIPService.saveProxy(strs[0], Integer.parseInt(strs[1]), FROM);
                     }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                proxy = proxyIPService.getAProxy();
             }
-
+            try {
+				Thread.sleep((long)Math.random() * 10 * 1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
         }
     }
 
