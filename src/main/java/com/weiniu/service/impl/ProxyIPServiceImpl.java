@@ -51,10 +51,11 @@ public class ProxyIPServiceImpl implements IProxyIPService{
 	}
 	
 	@Override
-	public void saveProxy(String host, int port, String from) {
+	public void saveProxy(String host, int port, String location, String from) {
     	ProxyIP ip = new ProxyIP();
     	ip.setHost(host);
     	ip.setPort(port);
+    	ip.setLocation(location);
     	ip.setComeFrom(from);
     	insert(ip);
 	}

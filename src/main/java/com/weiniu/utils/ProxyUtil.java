@@ -1,8 +1,11 @@
 package com.weiniu.utils;
 
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import com.weiniu.entity.ProxyIP;
 
@@ -12,28 +15,35 @@ public class ProxyUtil {
 	
 	// 选取一些响应速度比较快的网址用来测试代理IP的有效性
 	private static final String[] TEST_SITES = {
-			"http://www.json.cn",
-			"http://1212.ip138.com/ic.asp",
-			"http://www.bejson.com",
-			"http://www.baidu.com"
+			/*"http://www.json.cn",*/
+			"http://1212.ip138.com/ic.asp"
+			/*"http://www.bejson.com",
+			"http://www.baidu.com"*/
 	};
 	
 	private static String getUrl(){
 		return TEST_SITES[RandomUtil.randomInt(TEST_SITES.length)];
 	}
 	
-    public static boolean checkProxy(String ip, Integer port, String from){ 
+    public static String[] checkProxy(String ip, Integer port, String from){
     	logger.info(from +"--" + ip + ":" + port);
-        try {  
+        try {
         	// 随机取一个网站做连接测试
-            Jsoup.connect(getUrl())
-                    .timeout(3*1000)  
-                    .proxy(ip, port, null)  
-                    .get();  
-            logger.info(from +"--" + ip + ":" + port + "状态可用");  
-            return true;  
+            Document doc = Jsoup.connect(getUrl())
+                    .timeout(3*1000)
+                    .proxy(ip, port, null)
+                    .get();
+            String myIP = IPUtil.myIP();
+            if(!StringUtils.isEmpty(myIP) && doc.text().contains(myIP)) {
+            	logger.info(from +"--" + ip + ":" + port + "状态可用=====但是是透明的"); 
+            	return new String[]{"false"};
+            }
+            Elements eles = doc.getElementsByTag("center");
+            String text = eles.first().text();
+            logger.info(from +"--" + ip + ":" + port + "状态可用, " + text);  
+            return new String[]{"true", text.split("：")[2]};  
         } catch (Exception e) {
-            return false;  
+            return new String[]{"false"};  
         }
     }
     
@@ -42,8 +52,8 @@ public class ProxyUtil {
     		// 随机取一个网站做连接测试
     		Jsoup.connect(getUrl())
     		.timeout(3*1000)  
-    		.proxy(ip.getHost(), ip.getPort(), null)  
-    		.get();  
+    		.proxy(ip.getHost(), ip.getPort(), null)
+    		.get();
     		logger.info(ip + ":" + ip.getPort() + "状态可用");  
     		return true;  
     	} catch (Exception e) {

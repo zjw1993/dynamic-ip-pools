@@ -14,7 +14,7 @@ public interface IProxyIPService {
 	
 	public ProxyIP selectByHostAndPort(ProxyIP ip);
 	
-	public void saveProxy(String host, int port, String from);
+	public void saveProxy(String host, int port, String location, String from);
 	
 	/**
 	 * 随机获取一个可用ip

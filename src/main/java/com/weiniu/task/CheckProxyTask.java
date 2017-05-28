@@ -31,11 +31,12 @@ public class CheckProxyTask {
 		List<ProxyIP> ipList = proxyIPService.selectAll();
 		logger.info("数据库记录过滤开始.....本次共扫描到" + ipList.size() + "条数据");
 		for(ProxyIP ip : ipList) {
-			boolean isAble = ProxyUtil.checkProxy(ip.getHost(), ip.getPort(), "[后台检测]");
+			boolean isAble = ProxyUtil.checkProxy(ip);
 			if(!isAble) {
 				proxyIPService.delete(ip.getId());
 			}
 		}
+		logger.info("数据库记录过滤结束.....");
 	}
 	
 }

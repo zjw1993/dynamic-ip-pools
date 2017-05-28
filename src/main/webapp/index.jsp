@@ -25,6 +25,7 @@
 		<tr>
 			<td>IP</td>
 			<td>端口</td>
+			<td>省市</td>
 			<td>源网站</td>
 			<td>入库时间</td>
 		</tr>
@@ -49,6 +50,7 @@
 	                $.each(data.data, function(i, item){
 	                     html += "<tr><td>"+item.host+"</td>"
 	                           + "<td>"+item.port+"</td>"
+	                           + "<td>"+(item.location || "未知")+"</td>"
 	                           + "<td>"+item.comeFrom+"</td>"
 	                           + "<td>"+item.createTime+"</td></tr>";
 	                });
