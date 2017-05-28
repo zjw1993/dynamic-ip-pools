@@ -12,12 +12,14 @@
 	<context:annotation-config />
 	<task:annotation-driven/>
     <!-- 爬取代理网站代理ip的任务  -->
-    <bean id="proxyCralwerTask" class="com.weiniu.task.ProxyCralwerTask"/>
+    <!-- <bean id="proxyCralwerTask" class="com.weiniu.task.ProxyCralwerTask"/> -->
     <!-- 过滤数据库中无效代理的定时任务 -->
-    <bean id="checkProxyTask" class="com.weiniu.task.CheckProxyTask" />
+    <!-- <bean id="checkProxyTask" class="com.weiniu.task.CheckProxyTask" /> -->
+    <bean id="downloadTask" class="com.weiniu.task.DownloadTask" />
 
     <task:scheduled-tasks>
-	   <task:scheduled ref="proxyCralwerTask" method="run" cron="0 */30 * * * ?"/><!-- 每隔50分钟执行一次  -->
-	   <task:scheduled ref="checkProxyTask" method="run" cron="0 */3 * * * ?"/><!--每隔5分钟执行一次-->
+	   <!-- <task:scheduled ref="proxyCralwerTask" method="run" cron="0 */30 * * * ?"/> 
+	   <task:scheduled ref="checkProxyTask" method="run" cron="0 */3 * * * ?"/>-->
+	   <task:scheduled ref="downloadTask" method="run" cron="0 */1 * * * ?"/><!--每隔5分钟执行一次-->
 	</task:scheduled-tasks> 
 </beans>
