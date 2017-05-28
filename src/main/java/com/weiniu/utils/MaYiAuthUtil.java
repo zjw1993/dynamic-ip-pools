@@ -1,4 +1,4 @@
-package com.weiniu.antproxy;
+package com.weiniu.utils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -12,14 +12,23 @@ import com.google.common.base.Joiner;
 
 public class MaYiAuthUtil {
 
-	public static String getAuthHeader(String appkey, String secret) {
+	// 定义申请获得的appKey和appSecret
+	public static final String PROXY_IP = "s3.proxy.mayidaili.com";
+	public static final int PROXY_PORT = 8123;
+	
+	private static final String APPKEY = "77754893";
+	private static final String SECRET = "bf2177d6a45dd1d067f4fe474e41181f";
+	
+	public static String authHeader() {
 		
 		// 创建参数表
 		Map<String, String> paramMap = new HashMap<String, String>();
-		paramMap.put("app_key", appkey);
+		paramMap.put("app_key", APPKEY);
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		format.setTimeZone(TimeZone.getTimeZone("GMT+8"));// 使用中国时间，以免时区不同导致认证错误
+		format.setTimeZone(TimeZone.getTimeZone("GMT+8"));  // 使用中国时间，以免时区不同导致认证错误
 		paramMap.put("timestamp", format.format(new Date()));
+//		paramMap.put("enable-simulate", "true");     // true | false 是否只能模拟请求头信息
+//		paramMap.put("random-useragent", "mobile");  // disabled | pc | mobile , 在enable-simulate为true时生效 
 		
 		// 对参数名进行排序
 		String[] keyArray = paramMap.keySet().toArray(new String[0]);
@@ -27,12 +36,12 @@ public class MaYiAuthUtil {
 		
 		// 拼接有序的参数名-值串
 		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append(secret);
+		stringBuilder.append(SECRET);
 		for (String key : keyArray) {
 			stringBuilder.append(key).append(paramMap.get(key));
 		}
 		
-		stringBuilder.append(secret);
+		stringBuilder.append(SECRET);
 		String codes = stringBuilder.toString();
 		
 		// MD5编码并转为大写， 这里使用的是Apache codec

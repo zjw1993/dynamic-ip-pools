@@ -10,6 +10,7 @@ import com.weiniu.dao.ProxyIPMapper;
 import com.weiniu.entity.ProxyIP;
 import com.weiniu.service.IProxyIPService;
 import com.weiniu.utils.ProxyUtil;
+import com.weiniu.utils.RandomUtil;
 
 @Service("proxyIPService")
 public class ProxyIPServiceImpl implements IProxyIPService{
@@ -57,7 +58,7 @@ public class ProxyIPServiceImpl implements IProxyIPService{
     	ip.setPort(port);
     	ip.setLocation(location);
     	ip.setComeFrom(from);
-    	insert(ip);
+    	this.insert(ip);
 	}
 	
 	@Override
@@ -65,13 +66,13 @@ public class ProxyIPServiceImpl implements IProxyIPService{
 		List<ProxyIP> list = selectAll();
 		ProxyIP ip;
 		while(list.size() > 0) {
-			int randomInt = (int) Math.floor(Math.random() * list.size());
+			int randomInt = RandomUtil.randomInt(list.size());
 			ip = list.get(randomInt);
 			if(ProxyUtil.checkProxy(ip)) {
 				return ip;
 			} else {
-				delete(ip.getId());
 				list.remove(randomInt);
+				this.delete(ip.getId());
 			}
 		}
 		return null;

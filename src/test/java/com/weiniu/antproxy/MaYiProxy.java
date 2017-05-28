@@ -6,23 +6,18 @@ import org.jsoup.select.Elements;
 import org.springframework.util.StringUtils;
 
 import com.weiniu.utils.IPUtil;
+import com.weiniu.utils.MaYiAuthUtil;
 
 public class MaYiProxy {
 
-	// 定义申请获得的appKey和appSecret
-	private static final String APPKEY = "77754893";
-	private static final String SECRET = "bf2177d6a45dd1d067f4fe474e41181f";
-	private static final String PROXY_IP = "s3.proxy.mayidaili.com";
-	private static final int PROXY_PORT = 8123;
-	
 	private static final String IP138 = "http://1212.ip138.com/ic.asp";
 
-	private static int total = 0;
-	private static int error = 0;
-	private static int transparency = 0;
+	private static int total = 0;  // 总代理数
+	private static int error = 0;  // 无效代理数
+	private static int transparency = 0;  // 透明代理数
 	
 	public static void main(String[] args) {
-		int i = 1000000;
+		int i = 100;
 		while(i-->0) {
 			total++;
 			getFromIP138();
@@ -38,15 +33,18 @@ public class MaYiProxy {
 		
 		try {
             Document doc = Jsoup.connect(IP138)
-            		.proxy(PROXY_IP, PROXY_PORT, null)
-            		.header("Proxy-Authorization", MaYiAuthUtil.getAuthHeader(APPKEY, SECRET))
+            		.proxy(MaYiAuthUtil.PROXY_IP, MaYiAuthUtil.PROXY_PORT, null)
+            		.header("Proxy-Authorization", MaYiAuthUtil.authHeader())
                     .timeout(5*1000)
                     .get();
-            String myIP = IPUtil.myIP();
+            String myIP = IPUtil.myIP(); // 获取我的IP
+            // 如果IP138检测到的IP和我的IP一样表示该代理为透明代理
             if(!StringUtils.isEmpty(myIP) && doc.text().contains(myIP)) {
             	transparency++;
             	return;
             }
+            
+            // 输出IP信息描述文本
             Elements eles = doc.getElementsByTag("center");
             String text = eles.first().text();
             System.out.println(text);

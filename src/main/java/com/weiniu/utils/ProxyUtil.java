@@ -30,16 +30,20 @@ public class ProxyUtil {
         try {
         	// 随机取一个网站做连接测试
             Document doc = Jsoup.connect(getUrl())
+            		.proxy(ip, port, null)
+            		.header("User-Agent", UserAgentUtil.randomUserAgent())
                     .timeout(3*1000)
-                    .proxy(ip, port, null)
                     .get();
+            
             String myIP = IPUtil.myIP();
             if(!StringUtils.isEmpty(myIP) && doc.text().contains(myIP)) {
             	logger.info(from +"--" + ip + ":" + port + "状态可用=====但是是透明的"); 
             	return new String[]{"false"};
             }
+            
             Elements eles = doc.getElementsByTag("center");
             String text = eles.first().text();
+            
             logger.info(from +"--" + ip + ":" + port + "状态可用, " + text);  
             return new String[]{"true", text.split("：")[2]};  
         } catch (Exception e) {
@@ -51,8 +55,8 @@ public class ProxyUtil {
     	try {  
     		// 随机取一个网站做连接测试
     		Jsoup.connect(getUrl())
-    		.timeout(3*1000)  
     		.proxy(ip.getHost(), ip.getPort(), null)
+    		.timeout(3*1000)  
     		.get();
     		logger.info(ip + ":" + ip.getPort() + "状态可用");  
     		return true;  
