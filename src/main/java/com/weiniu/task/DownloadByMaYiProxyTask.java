@@ -13,10 +13,10 @@ import java.net.URLConnection;
 
 import org.springframework.stereotype.Component;
 
-import com.weiniu.utils.MaYiAuthUtil;
+import com.weiniu.utils.MaYiUtil;
 
 @Component
-public class DownloadTask {
+public class DownloadByMaYiProxyTask {
 
 	//@Autowired
 	//private IProxyIPService proxyIPService;
@@ -38,12 +38,12 @@ public class DownloadTask {
 			URL url = new URL(imgurl);
 			
 			// 设置代理
-			InetSocketAddress socket = new InetSocketAddress(MaYiAuthUtil.PROXY_IP, MaYiAuthUtil.PROXY_PORT);
+			InetSocketAddress socket = new InetSocketAddress(MaYiUtil.PROXY_IP, MaYiUtil.PROXY_PORT);
 			Proxy proxy = new Proxy(Proxy.Type.HTTP, socket);
 			URLConnection con = url.openConnection(proxy);
 			
 			// 设置请求头信息
-			con.setRequestProperty("Proxy-Authorization", MaYiAuthUtil.authHeader());
+			con.setRequestProperty("Proxy-Authorization", MaYiUtil.authHeader());
 			// 微信图片最好截取微信请求中的UserAgent 不要使用一般浏览器的UserAgent
 			//con.setRequestProperty("User-Agent", UserAgentUtil.randomUserAgent());  
 			

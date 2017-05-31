@@ -10,7 +10,7 @@ import java.util.TimeZone;
 
 import com.google.common.base.Joiner;
 
-public class MaYiAuthUtil {
+public class MaYiUtil {
 
 	// 定义申请获得的appKey和appSecret
 	public static final String PROXY_IP = "s3.proxy.mayidaili.com";

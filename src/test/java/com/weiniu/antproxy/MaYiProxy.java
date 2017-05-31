@@ -6,7 +6,7 @@ import org.jsoup.select.Elements;
 import org.springframework.util.StringUtils;
 
 import com.weiniu.utils.IPUtil;
-import com.weiniu.utils.MaYiAuthUtil;
+import com.weiniu.utils.MaYiUtil;
 
 public class MaYiProxy {
 
@@ -33,8 +33,8 @@ public class MaYiProxy {
 		
 		try {
             Document doc = Jsoup.connect(IP138)
-            		.proxy(MaYiAuthUtil.PROXY_IP, MaYiAuthUtil.PROXY_PORT, null)
-            		.header("Proxy-Authorization", MaYiAuthUtil.authHeader())
+            		.proxy(MaYiUtil.PROXY_IP, MaYiUtil.PROXY_PORT, null)
+            		.header("Proxy-Authorization", MaYiUtil.authHeader())
                     .timeout(5*1000)
                     .get();
             String myIP = IPUtil.myIP(); // 获取我的IP

@@ -13,7 +13,7 @@
 			margin: 20px auto;
 			border-collapse: collapse;
 		}
-		td{
+		td, th{
 			border:1px solid #000;
 		}
 	</style>
@@ -23,11 +23,11 @@
 <table id="tb">
 	<thead>
 		<tr>
-			<td>IP</td>
-			<td>端口</td>
-			<td>省市</td>
-			<td>源网站</td>
-			<td>入库时间</td>
+			<th>IP</th>
+			<th>端口</th>
+			<th>省市</th>
+			<th>源网站</th>
+			<th>入库时间</th>
 		</tr>
 	</thead>
 	<tbody id="tbody">

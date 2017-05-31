@@ -15,7 +15,7 @@ import javax.imageio.ImageIO;
 import com.weiniu.utils.BandwidthLimiter;
 import com.weiniu.utils.CommonUtil;
 import com.weiniu.utils.DownloadLimiter;
-import com.weiniu.utils.MaYiAuthUtil;
+import com.weiniu.utils.MaYiUtil;
 
 
 public class LimitDownloadTask {
@@ -63,10 +63,10 @@ public class LimitDownloadTask {
 		    URL url  = new URL(picUrl);
 			if(!CommonUtil.isEmpty(url)){
 				
-				InetSocketAddress socket = new InetSocketAddress(MaYiAuthUtil.PROXY_IP, MaYiAuthUtil.PROXY_PORT);
+				InetSocketAddress socket = new InetSocketAddress(MaYiUtil.PROXY_IP, MaYiUtil.PROXY_PORT);
 				Proxy proxy = new Proxy(Proxy.Type.HTTP, socket);
 				URLConnection conn = url.openConnection(proxy);
-				conn.setRequestProperty("Proxy-Authorization", MaYiAuthUtil.authHeader());
+				conn.setRequestProperty("Proxy-Authorization", MaYiUtil.authHeader());
 				InputStream inputStream = conn.getInputStream();
 				
 				DownloadLimiter dl = new DownloadLimiter(inputStream, new BandwidthLimiter(512));
