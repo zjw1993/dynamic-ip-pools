@@ -24,10 +24,10 @@ public class DownloadByIpPoolTask {
 	@Autowired
 	private IProxyIPService proxyIPService;
 	
-	private static final String IMG_URL = "http://118.89.150.235:9999/a.jpg";
+	private static final String IMG_URL = "http://118.89.150.235:9999/b.jpg";
 	
 	public void run(){
-		for(int i=0; i< 1000; i++) {
+		for(int i=0; i< 30; i++) {
 			System.out.print(i + " : ");
 			download(IMG_URL);
 		}
@@ -48,13 +48,14 @@ public class DownloadByIpPoolTask {
 						proxyIP.getPort());
 				Proxy proxy = new Proxy(Proxy.Type.HTTP, socket);
 				URLConnection con = url.openConnection(proxy);
+				con.setConnectTimeout(1000*5);
 				//con.setRequestProperty("User-Agent", UserAgentUtil.randomUserAgent());
 				in = con.getInputStream();
 				
 		        byte[] getData = readInputStream(in);      
 		  
 		        //文件保存位置  
-		        File saveDir = new File("G:\\download");  
+		        File saveDir = new File("E:\\download");  
 		        if(!saveDir.exists()){  
 		            saveDir.mkdir();  
 		        }
@@ -67,26 +68,20 @@ public class DownloadByIpPoolTask {
 		        System.out.println("success");
 				
 			} catch (MalformedURLException e) {
+				proxyIPService.delete(proxyIP.getId());
 				System.err.println("error");
 				e.printStackTrace();
 			} catch (IOException e) {
+				proxyIPService.delete(proxyIP.getId());
 				System.err.println("error");
 				e.printStackTrace();
 			} finally {
-				if(null != in) {
-					try {
-							in.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-				if(null != fos) {
-					try {
-						fos.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
+				try {
+					if(null != in) in.close();
+				} catch (IOException e) {}
+				try {
+					if(null != fos) fos.close();
+				} catch (IOException e) {}
 			}
 		}
 	}

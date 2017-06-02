@@ -13,11 +13,11 @@ import com.google.common.base.Joiner;
 public class MaYiUtil {
 
 	// 定义申请获得的appKey和appSecret
-	public static final String PROXY_IP = "s3.proxy.mayidaili.com";
+	public static final String PROXY_IP = "s4.proxy.mayidaili.com";
 	public static final int PROXY_PORT = 8123;
 	
-	private static final String APPKEY = "77754893";
-	private static final String SECRET = "bf2177d6a45dd1d067f4fe474e41181f";
+	private static final String APPKEY = "65244373";
+	private static final String SECRET = "0a0a13c921c27567483874380795435b";
 	
 	public static String authHeader() {
 		
@@ -27,8 +27,9 @@ public class MaYiUtil {
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		format.setTimeZone(TimeZone.getTimeZone("GMT+8"));  // 使用中国时间，以免时区不同导致认证错误
 		paramMap.put("timestamp", format.format(new Date()));
-//		paramMap.put("enable-simulate", "true");     // true | false 是否只能模拟请求头信息
-//		paramMap.put("random-useragent", "mobile");  // disabled | pc | mobile , 在enable-simulate为true时生效 
+		paramMap.put("timeout", "100000");
+		paramMap.put("enable-simulate", "true");     // true | false 是否只能模拟请求头信息
+		paramMap.put("random-useragent", "mobile");  // disabled | pc | mobile , 在enable-simulate为true时生效 
 		
 		// 对参数名进行排序
 		String[] keyArray = paramMap.keySet().toArray(new String[0]);

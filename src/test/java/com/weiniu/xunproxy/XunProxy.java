@@ -17,7 +17,12 @@ public class XunProxy {
 	private static final Logger logger = LoggerFactory.getLogger(XunProxy.class);
 	
 	private static final String FROM = "讯代理";
-	private static final String URL = "http://www.xdaili.cn/ipagent//privateProxy/getDynamicIP/MF20175316635PdoQue/9f7f53f4160211e79ff07cd30abda612?returnType=1";  // 国内高匿代理
+	// 动态独享
+	//private static final String URL = "http://www.xdaili.cn/ipagent//privateProxy/getDynamicIP/MF20175316635PdoQue/9f7f53f4160211e79ff07cd30abda612?returnType=1";  // 国内高匿代理
+	// 动态混切
+//	private static final String URL = "http://www.xdaili.cn/ipagent/privateProxy/applyStaticProxy?count=1&spiderId=f91993e584b5493c81ef52375c86f403&returnType=1";  // 国内高匿代理
+	private static final String URL = "http://www.xdaili.cn/ipagent/greatRecharge/getGreatIp?spiderId=f91993e584b5493c81ef52375c86f403&orderno=MF20176285325jQX71&returnType=1&count=20";  // 国内高匿代理
+	
 	private static final int TOTAL_PAGE = 10;
 	
     public void run(){
@@ -48,9 +53,10 @@ public class XunProxy {
                 e.printStackTrace();
             }
             try {
-				Thread.sleep(1000*15);
+				Thread.sleep(1000*5);
 			} catch (InterruptedException e) {
 			}
+            
         }
     }
     

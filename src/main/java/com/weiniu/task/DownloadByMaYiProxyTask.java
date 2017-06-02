@@ -18,13 +18,15 @@ import com.weiniu.utils.MaYiUtil;
 @Component
 public class DownloadByMaYiProxyTask {
 
-	//@Autowired
-	//private IProxyIPService proxyIPService;
-	
 	private static final String IMG_URL = "http://118.89.150.235:9999/a.jpg";
 	
+	public static void main(String[] args) {
+		DownloadByMaYiProxyTask t = new DownloadByMaYiProxyTask();
+		t.run();
+	}
+	
 	public void run(){
-		for(int i=0; i< 1000; i++) {
+		for(int i=0; i< 100; i++) {
 			System.out.print(i + " : ");
 			download(IMG_URL);
 		}
@@ -53,7 +55,7 @@ public class DownloadByMaYiProxyTask {
 			byte[] getData = readInputStream(in);      
 			
 			//文件保存位置  
-			File saveDir = new File("G:\\download");  
+			File saveDir = new File("E:\\download");  
 			if(!saveDir.exists()){  
 				saveDir.mkdir();  
 			}
@@ -87,60 +89,6 @@ public class DownloadByMaYiProxyTask {
 			}
 		}
 	}
-//	private void download(String imgurl){
-//		
-//		ProxyIP proxyIP = proxyIPService.getAProxy();
-//		if(null != proxyIP) {
-//			
-//			InputStream in = null;
-//			FileOutputStream fos = null;
-//			try {
-//				URL url = new URL(imgurl);
-//				
-//				InetSocketAddress socket = new InetSocketAddress(
-//						InetAddress.getByName(proxyIP.getHost()), 
-//						proxyIP.getPort());
-//				Proxy proxy = new Proxy(Proxy.Type.HTTP, socket);
-//				URLConnection con = url.openConnection(proxy);
-//				con.setRequestProperty("User-Agent", UserAgentUtil.randomUserAgent());
-//				in = con.getInputStream();
-//				
-//				//获取自己数组  
-//		        byte[] getData = readInputStream(in);      
-//		  
-//		        //文件保存位置  
-//		        File saveDir = new File("G:\\download");  
-//		        if(!saveDir.exists()){  
-//		            saveDir.mkdir();  
-//		        }
-//		        String fileName = System.currentTimeMillis() + ".jpg";
-//		        File file = new File(saveDir + File.separator + fileName);      
-//		        fos = new FileOutputStream(file);       
-//		        fos.write(getData);
-//		        fos.flush();
-//				
-//			} catch (MalformedURLException e) {
-//				e.printStackTrace();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			} finally {
-//				if(null != in) {
-//					try {
-//							in.close();
-//					} catch (IOException e) {
-//						e.printStackTrace();
-//					}
-//				}
-//				if(null != fos) {
-//					try {
-//						fos.close();
-//					} catch (IOException e) {
-//						e.printStackTrace();
-//					}
-//				}
-//			}
-//		}
-//	}
 	
 	/** 
      * 从输入流中获取字节数组 

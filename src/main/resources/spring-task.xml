@@ -15,7 +15,7 @@
     <!-- <bean id="proxyCralwerTask" class="com.weiniu.task.ProxyCralwerTask"/> -->
     <!-- 过滤数据库中无效代理的定时任务 -->
     <!-- <bean id="checkProxyTask" class="com.weiniu.task.CheckProxyTask" /> -->
-    <bean id="downloadTask" class="com.weiniu.task.DownloadTask" />
+    <bean id="downloadTask" class="com.weiniu.task.DownloadByIpPoolTask" />
 
     <task:scheduled-tasks>
 	   <!-- <task:scheduled ref="proxyCralwerTask" method="run" cron="0 */30 * * * ?"/> 
