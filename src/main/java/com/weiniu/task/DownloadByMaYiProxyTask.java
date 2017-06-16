@@ -18,7 +18,7 @@ import com.weiniu.utils.MaYiUtil;
 @Component
 public class DownloadByMaYiProxyTask {
 
-	private static final String IMG_URL = "http://118.89.150.235:9999/a.jpg";
+	private static final String IMG_URL = "http://118.89.150.235:9999/aaaa.jpg";
 	
 	public static void main(String[] args) {
 		DownloadByMaYiProxyTask t = new DownloadByMaYiProxyTask();
@@ -46,8 +46,6 @@ public class DownloadByMaYiProxyTask {
 			
 			// 设置请求头信息
 			con.setRequestProperty("Proxy-Authorization", MaYiUtil.authHeader());
-			// 微信图片最好截取微信请求中的UserAgent 不要使用一般浏览器的UserAgent
-			//con.setRequestProperty("User-Agent", UserAgentUtil.randomUserAgent());  
 			
 			in = con.getInputStream();
 			

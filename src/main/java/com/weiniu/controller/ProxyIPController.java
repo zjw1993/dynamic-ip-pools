@@ -1,5 +1,6 @@
 package com.weiniu.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,24 @@ public class ProxyIPController {
 		
 		map.put("data", list);
 		map.put("count", list.size());
+		
+		return map;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/list")
+	public Map<String, Object> list(){
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		List<ProxyIP> list = proxyIPService.selectAll();
+		List<String> ipList = new ArrayList<String>();
+		for(ProxyIP ip: list) {
+			String str = ip.getHost() + ":" + ip.getPort();
+			ipList.add(str);
+		}
+		
+		map.put("data", ipList);
+		map.put("count", ipList.size());
 		
 		return map;
 	}

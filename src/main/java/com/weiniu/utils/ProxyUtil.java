@@ -23,23 +23,22 @@ import com.weiniu.entity.ProxyIP;
 public class ProxyUtil {
 
 	private static final Logger logger = LoggerFactory.getLogger(ProxyUtil.class);
+	// url
+	private static final String API_URL = "http://www.66ip.cn/nmtq.php?getnum=5&isp=0&anonymoustype=4&area=1&proxytype=0&api=66ip";
+	//获取IP的正则表达式
+	private static final String IP_REG = "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\:\\d{1,6}";
+	
+	// API调用时间间隔   毫秒  -1为不限制
+	private static final long CALL_INTERVAL = 200;
+	// 上一次API调用时间戳
+	private static long LAST_TIME_MILLIS = 0;
+	// 当前被取走的IP
+	private static String CURRENT_IP = "";
 	
 	private static List<String> proxyList = new ArrayList<String>();
 	
-	private static final String API_URL = "http://www.66ip.cn/nmtq.php?"
-			+ "getnum=5&isp=0&anonymoustype=4&start=&ports=&export=&ipaddress="
-			+ "&area=1&proxytype=0&api=66ip";
-	// API调用时间间隔   毫秒  -1为不限制
-	private static long CALL_INTERVAL = 200;
-	// 上一次API调用时间毫秒数
-	private static long LAST_TIME_MILLIS = 0;
-	
-	private static String IP_REG = "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\:\\d{1,6}";
-	
-	private static String current_ip = "";
-	
 	public static void removeProxy(){
-		proxyList.remove(current_ip);
+		proxyList.remove(CURRENT_IP);
 	}
 	
 	public static URLConnection getConnection(URL url) throws IOException{
@@ -49,13 +48,13 @@ public class ProxyUtil {
 		Proxy proxy = new Proxy(Proxy.Type.HTTP, socket);
 		URLConnection conn = null;
 		conn = url.openConnection(proxy);
-		conn.setConnectTimeout(1000*3);
+		conn.setConnectTimeout(1000 * 3);
 		return conn;
 	}
 	
 	/**
 	 * get a random proxy
-	 * @return String Like "192.168.101.1:8888"
+	 * @return String Like "192.168.1.1:8888"
 	 */
 	public static String getAProxy(){
 		checkProxyList();
@@ -66,7 +65,7 @@ public class ProxyUtil {
 			checkProxyList();
 			proxy = proxyList.get(RandomUtil.randomInt(proxyList.size()));
 		}
-		current_ip = proxy;
+		CURRENT_IP = proxy;
 		return proxy;
 	}
 	
@@ -129,6 +128,28 @@ public class ProxyUtil {
             return new String[]{"false"};  
         }
     }
+	
+	public static String[] checkMaYiProxy(String ip, Integer port, String from){
+		logger.info(from +"--" + ip + ":" + port);
+		try {
+			// 随机取一个网站做连接测试
+			Document doc = getDocument(getUrl(), ip, port);
+			
+			String myIP = IPUtil.myIP();
+			if(!StringUtils.isEmpty(myIP) && doc.text().contains(myIP)) {
+				logger.info(from +"--" + ip + ":" + port + "状态可用=====但是是透明的"); 
+				return new String[]{"false"};
+			}
+			
+			Elements eles = doc.getElementsByTag("center");
+			String text = eles.first().text();
+			
+			logger.info(from +"--" + ip + ":" + port + "状态可用, " + text);  
+			return new String[]{"true", text.split("：")[2]};  
+		} catch (Exception e) {
+			return new String[]{"false"};  
+		}
+	}
     
     public static boolean checkProxy(ProxyIP ip){  
     	try {  
@@ -167,16 +188,12 @@ public class ProxyUtil {
 	
 	private static Document getDocument(String url, String proxyIP, Integer port) throws IOException{
 		Connection conn = Jsoup.connect(url)
-				.header("User-Agent", UserAgentUtil.randomPcUA())
-				.timeout(3*1000);
+				.userAgent(UserAgentUtil.randomPcUA())
+				.timeout(3 * 1000);
 		if(!StringUtils.isEmpty(proxyIP) || !(null == port)){
 			conn = conn.proxy(proxyIP, port, null);
 		} 
 		return conn.get();
-	}
-    
-    public static void main(String[] args) {
-		checkProxy("183.153.30.73", 808, "");
 	}
 	
 }

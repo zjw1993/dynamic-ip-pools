@@ -13,11 +13,11 @@ import com.google.common.base.Joiner;
 public class MaYiUtil {
 
 	// 定义申请获得的appKey和appSecret
-	public static final String PROXY_IP = "";
+	public static final String PROXY_IP = "s4.proxy.mayidaili.com";
 	public static final int PROXY_PORT = 8123;
 	
-	private static final String APPKEY = "";
-	private static final String SECRET = "";
+	private static final String APPKEY = "65244373";
+	private static final String SECRET = "0a0a13c921c27567483874380795435b";
 	
 	public static String authHeader() {
 		
